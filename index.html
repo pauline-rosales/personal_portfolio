@@ -156,36 +156,57 @@
             animation: fadeIn 1.5s ease-out;
         }
 
-        .profile-photo {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(147, 112, 219, 0.3), rgba(138, 43, 226, 0.3));
-            margin: 0 auto 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #e8e4f3;
-            font-size: 90px;
-            border: 2px solid rgba(147, 112, 219, 0.3);
-            box-shadow: 0 0 60px rgba(147, 112, 219, 0.4),
-                        inset 0 0 40px rgba(147, 112, 219, 0.1);
-            position: relative;
-            animation: float 6s ease-in-out infinite;
-            backdrop-filter: blur(10px);
+        /* animated outer ring */
+        .profile-photo-wrap {
+        position: relative;
+        width: 200px;            /* keep your original size */
+        height: 200px;
+        margin: 0 auto 40px;
+        animation: float 6s ease-in-out infinite; /* uses your existing keyframes */
         }
 
-        .profile-photo::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            border-radius: 50%;
-            border: 1px solid rgba(147, 112, 219, 0.2);
-            animation: glow 3s ease-in-out infinite;
+        .profile-photo-wrap::before {
+        content: '';
+        position: absolute;
+        inset: -20px;            /* ring outside the circle (not clipped) */
+        border-radius: 50%;
+        border: 1px solid rgba(147, 112, 219, 0.25);
+        box-shadow: 0 0 60px rgba(147, 112, 219, 0.4);
+        animation: glow 3s ease-in-out infinite;  /* uses your existing keyframes */
+        pointer-events: none;
         }
+
+        /* circular image mask + subtle inner gradient */
+        .profile-photo {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;        /* crops image to circle */
+        border: 2px solid rgba(147, 112, 219, 0.3);
+        box-shadow: inset 0 0 40px rgba(147, 112, 219, 0.1);
+        }
+
+        .profile-photo::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(147,112,219,0.18),
+            rgba(138,43,226,0.18)
+        );                       /* keeps your pretty gradient sheen */
+        pointer-events: none;
+        }
+
+        /* the actual image */
+        .profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;       /* fills and crops nicely */
+        display: block;
+        }
+
 
         .hero h1 {
             font-size: 56px;
@@ -541,7 +562,14 @@
 
     <div class="container">
         <section id="home" class="hero">
-            <div class="profile-photo">👤</div>
+
+            <div class="profile-photo-wrap">
+                <div class="profile-photo">
+                  <img src="assets/img/profile.jpg" alt="Pauline Rosales profile photo">
+                </div>
+              </div>
+              
+              
             <h1>pauline rosales</h1>
             <h2>ux designer & researcher</h2>
             <p>I specialize in creating user-centered designs through rigorous research, prototyping, and iterative testing. My passion lies in understanding user needs and translating them into intuitive, accessible digital experiences.</p>
